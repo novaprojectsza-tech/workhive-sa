@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import Optional
 import aiosqlite
 from app.models.database import DATABASE_URL
-from app.routers.auth import verify_token
+from app.routers.auth import get_current_user
 
 router = APIRouter(tags=["Applications"])
 
@@ -22,7 +22,7 @@ VALID_STATUSES = {"applied", "interview", "offer", "rejected", "withdrawn"}
 
 @router.get("/applications")
 async def get_applications(request: Request):
-    user = verify_token(request)
+    user = get_current_user(request)
     async with aiosqlite.connect(DATABASE_URL) as db:
         db.row_factory = aiosqlite.Row
         rows = await db.execute_fetchall(
@@ -36,7 +36,7 @@ async def get_applications(request: Request):
 
 @router.post("/applications", status_code=201)
 async def create_application(body: AppIn, request: Request):
-    user = verify_token(request)
+    user = get_current_user(request)
     async with aiosqlite.connect(DATABASE_URL) as db:
         db.row_factory = aiosqlite.Row
         job_rows = await db.execute_fetchall("SELECT * FROM jobs WHERE id=?", [body.job_id])
@@ -56,7 +56,7 @@ async def create_application(body: AppIn, request: Request):
 
 @router.patch("/applications/{app_id}")
 async def update_application(app_id: int, body: AppUpdate, request: Request):
-    user = verify_token(request)
+    user = get_current_user(request)
     if body.status and body.status not in VALID_STATUSES:
         raise HTTPException(400, f"Invalid status. Use: {', '.join(VALID_STATUSES)}")
     async with aiosqlite.connect(DATABASE_URL) as db:
@@ -77,7 +77,7 @@ async def update_application(app_id: int, body: AppUpdate, request: Request):
 
 @router.delete("/applications/{app_id}")
 async def delete_application(app_id: int, request: Request):
-    user = verify_token(request)
+    user = get_current_user(request)
     async with aiosqlite.connect(DATABASE_URL) as db:
         result = await db.execute(
             "DELETE FROM applications WHERE id=? AND user_id=?", [app_id, user["id"]]
