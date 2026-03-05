@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>WorkHive SA — Every Job. One Place.</title>
+<meta name="description" content="South Africa's #1 job aggregator. Remote, tech, local and general jobs updated daily from all major boards."/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,900;1,300;1,600&family=Cabinet+Grotesk:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fffbf5;
+  --surface:#ffffff;
+  --surface2:#fff7ee;
+  --border:#ffe8cc;
+  --accent:#ff6b2b;
+  --accent2:#f59e0b;
+  --danger:#ef4444;
+  --text:#1a0f00;
+  --muted:#8a6a4a;
+  --dim:#c8a882;
+  --remote:#00a86b;
+  --tech:#4f46e5;
+  --local:#e85d04;
+  --general:#0077b6;
+  --card-hover:#fff3e8;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  font-family:'Cabinet Grotesk',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ─── NOISE OVERLAY ─── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--dim);border-radius:3px}
+
+/* ─── TOP TICKER ─── */
+.ticker{
+  background:linear-gradient(90deg,#ff6b2b,#ff9f1c);
+  color:#ffffff;
+  padding:0.35rem 0;
+  overflow:hidden;
+  font-size:0.8rem;
+  font-weight:700;
+  letter-spacing:0.5px;
+  position:relative;z-index:10;
+}
+.ticker-inner{
+  display:flex;gap:4rem;
+  animation:ticker 30s linear infinite;
+  white-space:nowrap;
+}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-item::before{content:'●  ';opacity:0.5}
+
+/* ─── HEADER ─── */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(255,251,245,0.96);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 2rem;
+  display:flex;align-items:center;justify-content:space-between;
+  height:68px;
+  box-shadow:0 2px 16px rgba(255,107,43,0.08);
+}
+
+.logo{
+  font-family:'Fraunces',serif;
+  font-weight:900;font-size:1.6rem;
+  color:var(--text);letter-spacing:-1px;
+  text-decoration:none;
+  display:flex;align-items:center;gap:0.2rem;
+}
+.logo .hive{color:var(--accent)}
+.logo .dot{width:8px;height:8px;background:var(--accent);border-radius:50%;margin-bottom:4px;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+.header-nav{display:flex;align-items:center;gap:0.25rem}
+.header-nav a{
+  color:var(--muted);text-decoration:none;
+  font-size:0.88rem;font-weight:500;
+  padding:0.45rem 0.9rem;border-radius:8px;
+  transition:all 0.2s;
+}
+.header-nav a:hover{color:var(--text);background:#fff0e6}
+
+.btn-post{
+  background:linear-gradient(135deg,#ff6b2b,#ff9f1c);
+  color:#fff !important;
+  font-weight:800 !important;padding:0.5rem 1.2rem !important;
+  border-radius:8px;margin-left:0.5rem;
+  box-shadow:0 4px 14px rgba(255,107,43,0.35);
+  transition:opacity 0.2s,transform 0.15s !important;
+}
+.btn-post:hover{opacity:0.9;transform:translateY(-1px);background:linear-gradient(135deg,#ff6b2b,#ff9f1c) !important}
+
+/* ─── HERO ─── */
+.hero{
+  position:relative;padding:5rem 2rem 4rem;
+  text-align:center;overflow:hidden;
+  background:linear-gradient(160deg,#fff8f0 0%,#fff3e0 40%,#fde8d0 100%);
+}
+.hero-glow{
+  position:absolute;top:-100px;left:50%;transform:translateX(-50%);
+  width:800px;height:500px;
+  background:radial-gradient(ellipse at center,rgba(255,159,28,0.22) 0%,rgba(255,107,43,0.10) 50%,transparent 70%);
+  pointer-events:none;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,107,43,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,43,0.08) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black,transparent);
+  opacity:0.6;pointer-events:none;
+}
+
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  background:rgba(255,107,43,0.1);border:1px solid rgba(255,107,43,0.3);
+  color:var(--accent);border-radius:100px;
+  padding:0.35rem 1rem;font-size:0.8rem;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:1.5rem;
+}
+.live-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 1.5s ease infinite}
+
+.hero h1{
+  font-family:'Fraunces',serif;
+  font-size:clamp(2.8rem,6vw,5rem);
+  font-weight:900;line-height:1.05;
+  letter-spacing:-2px;margin-bottom:1.2rem;
+  color:var(--text);
+}
+.hero h1 em{font-style:italic;color:var(--accent);font-weight:300}
+.hero h1 .underline-accent{
+  position:relative;display:inline-block;
+}
+.hero h1 .underline-accent::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--accent),#ffb347);
+  border-radius:2px;
+}
+
+.hero-sub{
+  color:var(--muted);font-size:1.1rem;max-width:540px;margin:0 auto 2.5rem;
+  line-height:1.6;font-weight:400;
+}
+
+/* ─── SEARCH BOX ─── */
+.search-wrap{
+  max-width:700px;margin:0 auto 2rem;
+  background:#ffffff;
+  border:2px solid var(--border);
+  border-radius:16px;
+  padding:0.75rem;
+  display:grid;
+  grid-template-columns:1fr 1fr auto;
+  gap:0.5rem;
+  box-shadow:0 12px 40px rgba(255,107,43,0.15);
+}
+.search-input-wrap{position:relative}
+.search-icon{
+  position:absolute;left:0.9rem;top:50%;transform:translateY(-50%);
+  color:var(--muted);font-size:1rem;pointer-events:none;
+}
+.search-wrap input,.search-wrap select{
+  width:100%;background:#fff8f2;
+  border:1.5px solid var(--border);border-radius:10px;
+  padding:0.8rem 0.9rem 0.8rem 2.5rem;
+  color:var(--text);font-family:'Cabinet Grotesk',sans-serif;
+  font-size:0.92rem;outline:none;
+  transition:border-color 0.2s;
+}
+.search-wrap select{padding-left:0.9rem}
+.search-wrap input::placeholder{color:var(--dim)}
+.search-wrap input:focus,.search-wrap select:focus{border-color:var(--accent)}
+.search-wrap select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='%238a6a4a'%3E%3Cpath d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0.9rem center}
+.search-wrap select option{background:#ffffff}
+
+.btn-search{
+  background:linear-gradient(135deg,#ff6b2b,#ff9f1c);
+  color:#fff;border:none;border-radius:10px;
+  padding:0.8rem 1.8rem;font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:800;font-size:0.92rem;cursor:pointer;
+  white-space:nowrap;transition:transform 0.15s,box-shadow 0.15s;
+  letter-spacing:0.3px;
+  box-shadow:0 4px 16px rgba(255,107,43,0.4);
+}
+.btn-search:hover{transform:scale(1.02);box-shadow:0 6px 20px rgba(255,107,43,0.5)}
+
+/* ─── CATEGORY PILLS ─── */
+.category-pills{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:0.5rem;
+  margin-bottom:1rem;
+}
+.cpill{
+  display:flex;align-items:center;gap:0.4rem;
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:100px;padding:0.4rem 1rem;
+  font-size:0.83rem;font-weight:600;cursor:pointer;
+  transition:all 0.2s;color:var(--muted);
+  text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+.cpill:hover,.cpill.active{color:var(--text);border-color:var(--dim)}
+.cpill[data-cat="all"].active{background:#fff3e8;border-color:var(--accent);color:var(--accent)}
+.cpill[data-cat="remote"].active{background:rgba(0,168,107,0.1);border-color:var(--remote);color:var(--remote)}
+.cpill[data-cat="tech"].active{background:rgba(79,70,229,0.1);border-color:var(--tech);color:var(--tech)}
+.cpill[data-cat="local"].active{background:rgba(232,93,4,0.1);border-color:var(--local);color:var(--local)}
+.cpill[data-cat="general"].active{background:rgba(0,119,182,0.1);border-color:var(--general);color:var(--general)}
+.pill-dot{width:7px;height:7px;border-radius:50%}
+
+/* ─── STATS ROW ─── */
+.stats-row{
+  display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;
+  padding:2.5rem 2rem;
+  background:linear-gradient(180deg,#fde8d0 0%,#fffbf5 100%);
+}
+.stat-item{text-align:center}
+.stat-item strong{
+  display:block;font-family:'Fraunces',serif;font-weight:900;
+  font-size:2rem;color:var(--accent);letter-spacing:-1px;
+}
+.stat-item span{font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+
+/* ─── AD LEADERBOARD ─── */
+.ad-leaderboard{
+  padding:1rem 2rem;
+  display:flex;justify-content:center;align-items:center;
+  background:var(--bg);
+}
+.ad-slot{
+  background:linear-gradient(135deg,#fff8f2,#fff3e8);
+  border:1.5px dashed #ffc8a0;
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  color:#c8a882;font-size:0.75rem;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;
+  position:relative;
+}
+.ad-label{
+  position:absolute;top:6px;left:10px;
+  font-size:0.65rem;color:#c8a882;letter-spacing:0.5px;
+}
+.ad-728{width:min(728px,100%);height:90px}
+.ad-300{width:300px;height:250px;flex-shrink:0}
+.ad-300-sm{width:100%;height:90px}
+.ad-inline{width:100%;height:90px;margin:1rem 0}
+
+/* ─── SOURCES STRIP ─── */
+.sources-strip{
+  background:#fff8f2;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:1rem 2rem;text-align:center;
+}
+.sources-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin-bottom:0.75rem}
+.source-logos{display:flex;justify-content:center;align-items:center;gap:1rem;flex-wrap:wrap}
+.source-chip{
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:6px;padding:0.3rem 0.8rem;
+  font-size:0.78rem;font-weight:700;color:var(--muted);
+  box-shadow:0 1px 4px rgba(255,107,43,0.06);
+}
+
+/* ─── MAIN LAYOUT ─── */
+.layout{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 316px;
+  gap:1.5rem;padding:2rem;
+}
+@media(max-width:960px){.layout{grid-template-columns:1fr}.sidebar{order:2}}
+
+/* ─── RESULTS HEADER ─── */
+.results-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;
+}
+.results-head h2{font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;color:var(--text)}
+.results-head h2 span{color:var(--accent);font-weight:900}
+.sort-select{
+  background:#fff;border:1.5px solid var(--border);
+  color:var(--text);border-radius:8px;padding:0.4rem 0.8rem;
+  font-family:'Cabinet Grotesk',sans-serif;font-size:0.83rem;
+  outline:none;cursor:pointer;
+}
+
+/* ─── FILTER CHIPS ─── */
+.filter-row{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.fchip{
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:100px;padding:0.35rem 0.9rem;
+  font-size:0.8rem;font-weight:600;cursor:pointer;
+  color:var(--muted);transition:all 0.15s;
+}
+.fchip:hover{border-color:var(--dim);color:var(--text)}
+.fchip.on{background:rgba(255,107,43,0.1);border-color:var(--accent);color:var(--accent)}
+
+/* ─── JOB CARD ─── */
+.job-card{
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:14px;padding:1.25rem 1.4rem;
+  margin-bottom:0.7rem;cursor:pointer;
+  transition:all 0.2s;
+  display:grid;grid-template-columns:56px 1fr;gap:1rem;
+  align-items:start;
+  position:relative;overflow:hidden;
+  text-decoration:none;color:inherit;
+  box-shadow:0 2px 8px rgba(255,107,43,0.05);
+}
+.job-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:transparent;transition:background 0.2s;
+}
+.job-card:hover{
+  background:var(--card-hover);border-color:#ffb380;
+  transform:translateX(4px);
+  box-shadow:0 8px 24px rgba(255,107,43,0.12);
+}
+.job-card:hover::before{background:linear-gradient(180deg,var(--accent),#ffb347)}
+.job-card.featured{
+  border-color:#ffb380;
+  background:linear-gradient(135deg,#fff8f2,#fff3e8);
+}
+.job-card.featured::before{background:linear-gradient(180deg,var(--accent),#ffb347)}
+
+.logo-box{
+  width:56px;height:56px;border-radius:12px;
+  background:#fff8f2;border:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-weight:900;font-size:1.1rem;
+  flex-shrink:0;
+}
+
+.card-body{}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:0.5rem;margin-bottom:0.2rem}
+.job-title{font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:1rem;line-height:1.2;color:var(--text)}
+.job-salary{
+  font-family:'Fraunces',serif;font-weight:600;font-size:0.9rem;
+  color:var(--remote);white-space:nowrap;flex-shrink:0;
+}
+.job-company{font-size:0.85rem;color:var(--muted);margin-bottom:0.6rem;font-weight:500}
+.job-company strong{color:var(--text);font-weight:700}
+
+.tag-row{display:flex;flex-wrap:wrap;gap:0.35rem;align-items:center}
+.jtag{
+  border-radius:6px;padding:0.2rem 0.55rem;
+  font-size:0.73rem;font-weight:700;letter-spacing:0.3px;
+}
+.jtag-remote{background:rgba(0,168,107,0.12);color:var(--remote)}
+.jtag-tech{background:rgba(79,70,229,0.1);color:var(--tech)}
+.jtag-local{background:rgba(232,93,4,0.1);color:var(--local)}
+.jtag-general{background:rgba(0,119,182,0.1);color:var(--general)}
+.jtag-new{background:rgba(245,158,11,0.12);color:#b45309}
+.jtag-featured{background:rgba(255,107,43,0.12);color:var(--accent)}
+.jtag-neutral{background:#fff0e6;color:var(--muted)}
+
+.card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:0.7rem;padding-top:0.7rem;
+  border-top:1px solid var(--border);
+}
+.posted-time{font-size:0.75rem;color:var(--muted)}
+.source-via{
+  font-size:0.72rem;color:var(--muted);
+  background:#fff8f2;padding:0.15rem 0.5rem;
+  border:1px solid var(--border);
+  border-radius:4px;font-weight:600;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar-card{
+  background:#fff;border:1.5px solid var(--border);
+  border-radius:14px;padding:1.25rem;margin-bottom:1rem;
+  box-shadow:0 2px 10px rgba(255,107,43,0.06);
+}
+.sidebar-card h3{
+  font-family:'Fraunces',serif;font-weight:700;font-size:1rem;
+  margin-bottom:1rem;color:var(--text);
+}
+
+.cat-list{list-style:none}
+.cat-list li{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.55rem 0;border-bottom:1px solid var(--border);
+  font-size:0.85rem;cursor:pointer;transition:color 0.15s;font-weight:500;
+  color:var(--text);
+}
+.cat-list li:last-child{border-bottom:none}
+.cat-list li:hover{color:var(--accent)}
+.cat-list li .ccount{
+  background:#fff3e8;border-radius:100px;
+  padding:0.1rem 0.55rem;font-size:0.73rem;color:var(--accent);font-weight:700;
+}
+
+.alert-input{
+  width:100%;background:#fff8f2;
+  border:1.5px solid var(--border);border-radius:8px;
+  padding:0.7rem;color:var(--text);
+  font-family:'Cabinet Grotesk',sans-serif;font-size:0.85rem;
+  outline:none;margin-bottom:0.6rem;
+}
+.alert-input:focus{border-color:var(--accent)}
+.alert-input::placeholder{color:var(--dim)}
+
+.btn-full{
+  width:100%;
+  background:linear-gradient(135deg,#ff6b2b,#ff9f1c);
+  color:#fff;
+  border:none;border-radius:8px;padding:0.75rem;
+  font-family:'Cabinet Grotesk',sans-serif;font-weight:800;
+  font-size:0.88rem;cursor:pointer;
+  transition:opacity 0.15s,transform 0.15s;letter-spacing:0.3px;
+  box-shadow:0 4px 14px rgba(255,107,43,0.3);
+}
+.btn-full:hover{opacity:0.9;transform:translateY(-1px)}
+
+/* ─── COMPANY LOGOS ─── */
+.company-logos{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem}
+.co-logo{
+  background:#fff8f2;border:1.5px solid var(--border);
+  border-radius:8px;padding:0.6rem;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-weight:900;font-size:0.8rem;
+  color:var(--muted);cursor:pointer;transition:all 0.15s;
+}
+.co-logo:hover{border-color:#ffb380;color:var(--accent);background:#fff3e8}
+
+/* ─── PAGINATION ─── */
+.pagination{display:flex;justify-content:center;gap:0.4rem;padding:1.5rem 0}
+.pager{
+  width:38px;height:38px;border-radius:9px;
+  border:1.5px solid var(--border);background:#fff;
+  color:var(--muted);font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:700;font-size:0.85rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;
+}
+.pager:hover,.pager.active{
+  background:linear-gradient(135deg,#ff6b2b,#ff9f1c);
+  color:#fff;border-color:transparent;
+  box-shadow:0 4px 12px rgba(255,107,43,0.35);
+}
+
+/* ─── FOOTER ─── */
+.site-footer{
+  background:linear-gradient(180deg,#fff3e8,#ffe8d0);
+  border-top:1px solid var(--border);
+  padding:3rem 2rem;margin-top:2rem;
+}
+.footer-inner{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;
+}
+@media(max-width:768px){.footer-inner{grid-template-columns:1fr 1fr}}
+.footer-brand p{color:var(--muted);font-size:0.85rem;margin-top:0.5rem;line-height:1.6}
+.footer-col h4{font-weight:700;font-size:0.88rem;margin-bottom:0.75rem;color:var(--text)}
+.footer-col a{display:block;color:var(--muted);text-decoration:none;font-size:0.83rem;margin-bottom:0.4rem;transition:color 0.15s}
+.footer-col a:hover{color:var(--accent)}
+.footer-bottom{
+  max-width:1280px;margin:2rem auto 0;
+  padding-top:1.5rem;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:0.78rem;color:var(--muted);flex-wrap:wrap;gap:0.5rem;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.job-card{animation:fadeUp 0.4s ease both}
+
+/* ─── MOBILE ─── */
+@media(max-width:600px){
+  .search-wrap{grid-template-columns:1fr}
+  .stats-row{gap:1.5rem}
+  .header-nav a:not(.btn-post){display:none}
+  .layout{padding:1rem}
+  .footer-inner{grid-template-columns:1fr}
+}
+
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,15,0,.6);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.open,.modal-overlay[style*="flex"]{display:flex}
+.modal-box{background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:460px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.2);animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-box h2{font-family:Fraunces,serif;font-size:1.6rem;font-weight:900;letter-spacing:-1px;margin-bottom:.2rem}
+.form-lbl{display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.5px}
+.form-inp{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:.7rem .9rem;font-family:"Cabinet Grotesk",sans-serif;font-size:.92rem;color:var(--text);outline:none;margin-bottom:.9rem;transition:border-color .2s}
+.form-inp:focus{border-color:var(--accent)}
+.err-box{background:#fff0f0;border:1px solid #fca5a5;color:#dc2626;padding:.5rem .8rem;border-radius:8px;font-size:.83rem;margin-bottom:.8rem;display:none}
+.btn-full{width:100%;background:linear-gradient(135deg,#ff6b2b,#ff9f1c);color:#fff;border:none;padding:.8rem;border-radius:10px;font-family:"Cabinet Grotesk",sans-serif;font-weight:800;font-size:.95rem;cursor:pointer;margin-top:.3rem}
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item">4,821 live jobs updated today</span>
+    <span class="ticker-item">New: 234 remote positions added this week</span>
+    <span class="ticker-item">Top hiring: Discovery, Shoprite, Capitec, FNB, Takealot</span>
+    <span class="ticker-item">Tech jobs up 18% in Johannesburg this month</span>
+    <span class="ticker-item">Cape Town remote jobs: 502 available now</span>
+    <span class="ticker-item">4,821 live jobs updated today</span>
+    <span class="ticker-item">New: 234 remote positions added this week</span>
+    <span class="ticker-item">Top hiring: Discovery, Shoprite, Capitec, FNB, Takealot</span>
+    <span class="ticker-item">Tech jobs up 18% in Johannesburg this month</span>
+    <span class="ticker-item">Cape Town remote jobs: 502 available now</span>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">
+    <div class="dot"></div>Work<span class="hive">Hive</span>&nbsp;SA
+  </a>
+  <nav class="header-nav">
+    <a href="#" onclick="showHome();return false">Browse</a>
+    <a id="dashBtn" href="#" onclick="showDashboard();return false" style="display:none">My Applications</a>
+    <a href="#" onclick="document.querySelectorAll('.cpill').forEach(p=>p.classList.remove('active'));activeCat='remote';activeRemote=true;loadJobs(1);return false">Remote</a>
+    <div id="authButtons" style="display:flex;gap:.25rem;align-items:center">
+      <a href="#" onclick="openLogin();return false">Sign In</a>
+      <a href="#" class="btn-post" onclick="openRegister();return false">Register Free</a>
+    </div>
+    <div id="userBadge" style="display:none;align-items:center;gap:.4rem"></div>
+  </nav>
+</header>
+
+<!-- DASHBOARD -->
+<div id="dashSection" style="display:none;max-width:900px;margin:0 auto;padding:2.5rem 2rem">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:1rem">
+    <div>
+      <h2 style="font-family:Fraunces,serif;font-size:2rem;font-weight:900;letter-spacing:-1px">My Applications</h2>
+      <p style="color:var(--muted);font-size:.9rem;margin-top:.2rem">Track every job you've applied to</p>
+    </div>
+    <button class="btn-search" onclick="showHome()" style="padding:.6rem 1.2rem">← Back to Jobs</button>
+  </div>
+  <div id="appList"></div>
+</div>
+
+<div id="homeSections">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-eyebrow">
+    <div class="live-dot"></div>
+    Live · Updated every 6 hours
+  </div>
+
+  <h1>
+    Every SA job.<br>
+    <span class="underline-accent"><em>One place.</em></span>
+  </h1>
+  <p class="hero-sub">
+    We pull from Indeed, LinkedIn, Careers24, PNet, Jobmail & more — so you don't have to.
+    Remote, tech, local, general — all here.
+  </p>
+
+  <div class="search-wrap">
+    <div class="search-input-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Job title, skill, or company…" oninput="doFilter()"/>
+    </div>
+    <select id="locationSel" onchange="doFilter()">
+      <option value="">📍 All Locations</option>
+      <option>Johannesburg</option>
+      <option>Cape Town</option>
+      <option>Durban</option>
+      <option>Pretoria</option>
+      <option>Sandton</option>
+      <option>Remote</option>
+    </select>
+    <button class="btn-search" onclick="doFilter()">Find Jobs</button>
+  </div>
+
+  <div class="category-pills">
+    <a class="cpill active" data-cat="all" onclick="setCat(this,'all')">🌐 All Jobs</a>
+    <a class="cpill" data-cat="remote" onclick="setCat(this,'remote')"><span class="pill-dot" style="background:var(--remote)"></span>Remote</a>
+    <a class="cpill" data-cat="tech" onclick="setCat(this,'tech')"><span class="pill-dot" style="background:var(--tech)"></span>Tech & IT</a>
+    <a class="cpill" data-cat="local" onclick="setCat(this,'local')"><span class="pill-dot" style="background:var(--local)"></span>Local</a>
+    <a class="cpill" data-cat="general" onclick="setCat(this,'general')"><span class="pill-dot" style="background:var(--general)"></span>General</a>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-row">
+  <div class="stat-item"><strong>4,821</strong><span>Live Jobs</span></div>
+  <div class="stat-item"><strong>1,240</strong><span>Companies</span></div>
+  <div class="stat-item"><strong>12</strong><span>Job Boards</span></div>
+  <div class="stat-item"><strong>502</strong><span>Remote Roles</span></div>
+  <div class="stat-item"><strong>Daily</strong><span>Updates</span></div>
+</div>
+
+<!-- AD: LEADERBOARD -->
+<div class="ad-leaderboard">
+  <div class="ad-slot ad-728">
+    <span class="ad-label">Advertisement</span>
+    <!-- Google AdSense Leaderboard 728x90 -->
+    <!--
+    <ins class="adsbygoogle"
+         style="display:inline-block;width:728px;height:90px"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"></ins>
+    <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+    -->
+    Google AdSense · 728×90 Leaderboard
+  </div>
+</div>
+
+<!-- SOURCES -->
+<div class="sources-strip">
+  <div class="sources-label">Aggregated from</div>
+  <div class="source-logos">
+    <span class="source-chip">Indeed</span>
+    <span class="source-chip">LinkedIn</span>
+    <span class="source-chip">Careers24</span>
+    <span class="source-chip">PNet</span>
+    <span class="source-chip">Jobmail</span>
+    <span class="source-chip">Glassdoor</span>
+    <span class="source-chip">Reed</span>
+    <span class="source-chip">Adzuna</span>
+    <span class="source-chip">BizCommunity</span>
+    <span class="source-chip">TechCareer</span>
+    <span class="source-chip">GovernmentJobs</span>
+    <span class="source-chip">Gumtree</span>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+  <!-- JOBS COLUMN -->
+  <main>
+    <div class="results-head">
+      <h2>Jobs in SA — <span id="jobCount">4,821</span> found</h2>
+      <select class="sort-select" onchange="doFilter()">
+        <option>Newest first</option>
+        <option>Most relevant</option>
+        <option>Highest salary</option>
+      </select>
+    </div>
+
+    <!-- FILTER CHIPS -->
+    <div class="filter-row">
+      <button class="fchip" onclick="toggleChip(this)" data-f="full-time">Full-time</button>
+      <button class="fchip" onclick="toggleChip(this)" data-f="part-time">Part-time</button>
+      <button class="fchip" onclick="toggleChip(this)" data-f="contract">Contract</button>
+      <button class="fchip" onclick="toggleChip(this)" data-f="internship">Internship</button>
+      <button class="fchip" onclick="toggleChip(this)" data-f="entry">Entry-level</button>
+      <button class="fchip" onclick="toggleChip(this)" data-f="senior">Senior</button>
+    </div>
+
+    <!-- JOB LIST -->
+    <div id="jobList"></div>
+
+    <!-- INLINE AD -->
+    <div class="ad-slot ad-inline">
+      <span class="ad-label">Advertisement</span>
+      <!-- Google AdSense In-feed -->
+      <!--
+      <ins class="adsbygoogle" style="display:block"
+           data-ad-format="fluid" data-ad-layout-key="-fb+5w+4e-db+86"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+      -->
+      Google AdSense · In-feed Ad
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination" id="pagination">
+      <button class="pager active">1</button>
+      <button class="pager">2</button>
+      <button class="pager">3</button>
+      <button class="pager">4</button>
+      <button class="pager">…</button>
+      <button class="pager">24</button>
+    </div>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- SIDEBAR AD 1 -->
+    <div class="ad-slot ad-300" style="margin-bottom:1rem">
+      <span class="ad-label">Advertisement</span>
+      <!-- Google AdSense 300x250 Rectangle -->
+      <!--
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:300px;height:250px"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+      -->
+      Google AdSense<br>300×250
+    </div>
+
+    <!-- JOB ALERT -->
+    <div class="sidebar-card">
+      <h3>📬 Job Alerts</h3>
+      <p style="font-size:0.82rem;color:var(--muted);margin-bottom:0.75rem">Get matching jobs emailed to you daily.</p>
+      <input class="alert-input" type="text" placeholder="Job title or keyword"/>
+      <input class="alert-input" type="text" placeholder="Location (optional)"/>
+      <input class="alert-input" type="email" placeholder="Your email address"/>
+      <button class="btn-full">Create Free Alert</button>
+    </div>
+
+    <!-- BROWSE BY CATEGORY -->
+    <div class="sidebar-card">
+      <h3>Browse Categories</h3>
+      <ul class="cat-list">
+        <li><span>💻 Technology & IT</span><span class="ccount">892</span></li>
+        <li><span>💰 Finance & Banking</span><span class="ccount">613</span></li>
+        <li><span>📣 Sales & Marketing</span><span class="ccount">544</span></li>
+        <li><span>🏥 Healthcare</span><span class="ccount">438</span></li>
+        <li><span>⚙️ Engineering</span><span class="ccount">391</span></li>
+        <li><span>📚 Education</span><span class="ccount">278</span></li>
+        <li><span>🏗️ Construction</span><span class="ccount">211</span></li>
+        <li><span>🌍 Remote Only</span><span class="ccount">502</span></li>
+        <li><span>🏛️ Government</span><span class="ccount">188</span></li>
+      </ul>
+    </div>
+
+    <!-- TOP COMPANIES -->
+    <div class="sidebar-card">
+      <h3>Top Hiring Now</h3>
+      <div class="company-logos">
+        <div class="co-logo">FNB</div>
+        <div class="co-logo">ABSA</div>
+        <div class="co-logo">MTN</div>
+        <div class="co-logo">SAP</div>
+        <div class="co-logo">DIS</div>
+        <div class="co-logo">SHP</div>
+        <div class="co-logo">TKL</div>
+        <div class="co-logo">NET</div>
+        <div class="co-logo">CAP</div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR AD 2 -->
+    <div class="ad-slot ad-300">
+      <span class="ad-label">Advertisement</span>
+      <!-- Google AdSense 300x250 Rectangle #2 -->
+      <!--
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:300px;height:250px"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+      -->
+      Google AdSense<br>300×250
+    </div>
+
+  </aside>
+</div>
+
+<!-- FOOTER -->
+</div><!-- /homeSections -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo" style="font-size:1.3rem">Work<span class="hive">Hive</span> SA</div>
+      <p>South Africa's job aggregator. We pull from 12+ boards every 6 hours so you always see the freshest opportunities — one place, no duplicates.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Job Seekers</h4>
+      <a href="#">Browse All Jobs</a>
+      <a href="#">Remote Jobs</a>
+      <a href="#">Tech Jobs</a>
+      <a href="#">Internships</a>
+      <a href="#">Salary Guide</a>
+    </div>
+    <div class="footer-col">
+      <h4>Employers</h4>
+      <a href="#">Post a Job</a>
+      <a href="#">Advertise with Us</a>
+      <a href="#">Pricing Plans</a>
+      <a href="#">Featured Listing</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About WorkHive SA</a>
+      <a href="#">How It Works</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 WorkHive SA. All rights reserved.</span>
+    <span>Jobs aggregated daily from public sources. WorkHive is not a recruiter.</span>
+  </div>
+</footer>
+
+<script>
+/* ─── WorkHive SA — Live API ─── */
+const API = '/api/v1';
+let activeCat = 'all';
+let activeRemote = false;
+let currentPage = 1;
+let totalPages = 1;
+let currentUser = null;
+
+// ── UTILS ────────────────────────────────────────────────────────────────────
+function relTime(str) {
+  if (!str) return 'recently';
+  const d = Date.now() - new Date(str).getTime();
+  const h = Math.floor(d/3600000), dy = Math.floor(d/86400000);
+  if (d < 3600000) return Math.floor(d/60000) + 'm ago';
+  if (h < 24) return h + 'h ago';
+  if (dy === 1) return '1 day ago';
+  return dy + ' days ago';
+}
+function esc(s) { return (s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,"&#39;"); }
+function logoAbbr(company) { return (company||'??').replace(/[^A-Za-z0-9]/g,'').slice(0,3).toUpperCase() || '??'; }
+function logoColor(cat) {
+  const m={tech:'#4f46e5',finance:'#f59e0b',healthcare:'#ef4444',engineering:'#0077b6',
+           marketing:'#00a86b',sales:'#e85d04',education:'#7c3aed',admin:'#6b7280',general:'#8a6a4a'};
+  return m[(cat||'').toLowerCase()] || '#8a6a4a';
+}
+
+// ── TOAST ────────────────────────────────────────────────────────────────────
+function toast(msg, type='') {
+  let t = document.getElementById('toast-el');
+  if (!t) { t = document.createElement('div'); t.id='toast-el'; t.style.cssText='position:fixed;bottom:2rem;right:2rem;background:#1a0f00;color:#fff;padding:.75rem 1.25rem;border-radius:10px;font-size:.88rem;font-weight:600;z-index:9999;transition:all .3s;opacity:0;transform:translateY(8px)'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.style.borderLeft = type==='success' ? '3px solid #00a86b' : type==='error' ? '3px solid #ef4444' : '';
+  t.style.opacity = '1'; t.style.transform = 'translateY(0)';
+  clearTimeout(t._t); t._t = setTimeout(() => { t.style.opacity='0'; t.style.transform='translateY(8px)'; }, 3000);
+}
+
+// ── AUTH ─────────────────────────────────────────────────────────────────────
+async function checkAuth() {
+  try {
+    const r = await fetch(`${API}/me`);
+    if (r.ok) { const d = await r.json(); setUser(d.user); }
+  } catch {}
+}
+
+function setUser(u) {
+  currentUser = u;
+  document.getElementById('authButtons').style.display = 'none';
+  const ub = document.getElementById('userBadge');
+  ub.style.display = 'flex';
+  ub.innerHTML = `<span style="background:linear-gradient(135deg,#ff6b2b,#ff9f1c);color:#fff;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.8rem;margin-right:.4rem">${u.name[0].toUpperCase()}</span><span style="font-weight:700;color:var(--accent)">${u.name.split(' ')[0]}</span><a onclick="logout()" style="margin-left:.75rem;color:var(--muted);cursor:pointer;font-size:.82rem">Logout</a>`;
+  document.getElementById('dashBtn').style.display = '';
+}
+
+function clearUser() {
+  currentUser = null;
+  document.getElementById('authButtons').style.display = '';
+  document.getElementById('userBadge').style.display = 'none';
+  document.getElementById('dashBtn').style.display = 'none';
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value;
+  const pw = document.getElementById('loginPw').value;
+  const err = document.getElementById('loginErr');
+  try {
+    const r = await fetch(`${API}/login`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password:pw})});
+    const d = await r.json();
+    if (!r.ok) { err.textContent=d.detail||d.error; err.style.display='block'; return; }
+    setUser(d.user); closeModal('authModal'); toast('Welcome back, '+d.user.name.split(' ')[0]+'! 👋','success');
+  } catch { err.textContent='Connection error'; err.style.display='block'; }
+}
+
+async function doRegister() {
+  const name = document.getElementById('regName').value;
+  const email = document.getElementById('regEmail').value;
+  const pw = document.getElementById('regPw').value;
+  const err = document.getElementById('regErr');
+  if (pw.length < 6) { err.textContent='Password must be at least 6 characters'; err.style.display='block'; return; }
+  try {
+    const r = await fetch(`${API}/register`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,password:pw})});
+    const d = await r.json();
+    if (!r.ok) { err.textContent=d.detail||d.error; err.style.display='block'; return; }
+    setUser(d.user); closeModal('authModal'); toast('Welcome to WorkHive SA! 🎉','success');
+  } catch { err.textContent='Connection error'; err.style.display='block'; }
+}
+
+async function logout() {
+  await fetch(`${API}/logout`, {method:'POST'});
+  clearUser(); showHome(); toast('Logged out');
+}
+
+// ── JOBS ─────────────────────────────────────────────────────────────────────
+async function loadJobs(page=1) {
+  currentPage = page;
+  const q = document.getElementById('searchInput').value;
+  const loc = document.getElementById('locationSel').value;
+  const params = new URLSearchParams({page, per_page:12});
+  if (q) params.set('q', q);
+  if (activeCat !== 'all') params.set('category', activeCat);
+  if (loc) params.set('location', loc);
+  if (activeRemote) params.set('is_remote', 'true');
+
+  showSkeletons();
+  try {
+    const r = await fetch(`${API}/jobs?${params}`);
+    const d = await r.json();
+    totalPages = d.pages || 1;
+    document.getElementById('jobCount').textContent = `${(d.total||0).toLocaleString()} jobs found`;
+    renderJobs(d.jobs || []);
+    renderPagination(d.page, d.pages);
+  } catch {
+    document.getElementById('jobList').innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted)">⚠️ Could not load jobs. Is the server running?</div>';
+  }
+}
+
+function showSkeletons() {
+  document.getElementById('jobList').innerHTML = Array(4).fill(0).map(()=>`
+    <div style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:.75rem">
+      <div style="background:linear-gradient(90deg,#f0e8de 25%,#ffe8cc 50%,#f0e8de 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;height:18px;width:60%;margin-bottom:.5rem"></div>
+      <div style="background:linear-gradient(90deg,#f0e8de 25%,#ffe8cc 50%,#f0e8de 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;height:14px;width:40%"></div>
+    </div>`).join('');
+}
+
+function renderJobs(jobs) {
+  const el = document.getElementById('jobList');
+  if (!jobs.length) { el.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted)">No jobs found. Try different filters.</div>'; return; }
+  let html = '';
+  jobs.forEach((j, i) => {
+    const color = logoColor(j.category);
+    const abbr = logoAbbr(j.company);
+    html += `
+    <a class="job-card${j.is_featured?' featured':''}" href="#" style="animation-delay:${i*0.05}s" onclick="openJob(${j.id});return false">
+      <div class="logo-box" style="color:${color};background:${color}18;border-color:${color}33">${abbr}</div>
+      <div class="card-body">
+        <div class="card-top">
+          <div class="job-title">${esc(j.title)}</div>
+          <div class="job-salary">${esc(j.salary||j.salary_text||'Salary TBC')}</div>
+        </div>
+        <div class="job-company"><strong>${esc(j.company)}</strong> · ${esc(j.location)}</div>
+        <div class="tag-row">
+          ${j.category ? `<span class="jtag jtag-tech">${esc(j.category)}</span>` : ''}
+          ${j.is_remote ? `<span class="jtag jtag-remote">🌍 Remote</span>` : ''}
+          ${j.job_type ? `<span class="jtag jtag-neutral">${esc(j.job_type)}</span>` : ''}
+        </div>
+        <div class="card-footer">
+          <span class="posted-time">🕐 ${relTime(j.posted_at||j.fetched_at)}</span>
+          <span class="source-via">via ${esc(j.source||'Adzuna')}</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;flex-shrink:0">
+        <button class="btn-apply" onclick="event.stopPropagation();trackJob(${j.id},'${esc(j.title)}','${esc(j.company)}')">Track</button>
+      </div>
+    </a>`;
+    // In-feed ad after 3rd card
+    if (i === 2) html += `
+    <div style="background:#fff9f5;border:1.5px dashed var(--border);border-radius:12px;padding:1rem;margin-bottom:.75rem;text-align:center;color:var(--dim);font-size:.75rem;position:relative;min-height:90px;display:flex;align-items:center;justify-content:center;flex-direction:column">
+      <span style="position:absolute;top:6px;right:8px;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase">Advertisement</span>
+      <!-- AdSense In-feed: replace this block -->
+      Google AdSense · In-feed
+    </div>`;
+  });
+  el.innerHTML = html;
+}
+
+function renderPagination(page, pages) {
+  const el = document.getElementById('pagination');
+  if (!pages || pages <= 1) { el.innerHTML=''; return; }
+  let html = '';
+  if (page > 1) html += `<button class="pager" onclick="loadJobs(${page-1})">←</button>`;
+  const s = Math.max(1,page-2), e = Math.min(pages,page+2);
+  for (let i=s; i<=e; i++) html += `<button class="pager${i===page?' active':''}" onclick="loadJobs(${i})">${i}</button>`;
+  if (page < pages) html += `<button class="pager" onclick="loadJobs(${page+1})">→</button>`;
+  el.innerHTML = html;
+}
+
+// ── JOB DETAIL ───────────────────────────────────────────────────────────────
+async function openJob(id) {
+  const m = document.getElementById('jobDetailModal');
+  document.getElementById('jobDetailBody').innerHTML = '<p style="text-align:center;padding:2rem;color:var(--muted)">Loading...</p>';
+  m.style.display = 'flex';
+  try {
+    const r = await fetch(`${API}/jobs/${id}`);
+    const j = await r.json();
+    document.getElementById('jobDetailBody').innerHTML = `
+      <h2 style="font-family:Fraunces,serif;font-size:1.5rem;font-weight:900;letter-spacing:-1px;margin-bottom:.2rem">${esc(j.title)}</h2>
+      <p style="color:var(--muted);margin-bottom:1rem">${esc(j.company)} · ${esc(j.location)}</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.25rem">
+        ${[['Salary',j.salary||j.salary_text||'TBC'],['Type',j.job_type||'Full-time'],['Category',j.category||'General'],['Source',j.source||'Adzuna']].map(([l,v])=>`
+        <div style="background:var(--surface2);border-radius:10px;padding:.75rem 1rem">
+          <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:var(--dim);font-weight:700">${l}</div>
+          <div style="font-size:.92rem;font-weight:700;color:var(--text)">${esc(String(v))}</div>
+        </div>`).join('')}
+      </div>
+      <div style="max-height:280px;overflow-y:auto;font-size:.88rem;line-height:1.7;color:var(--text);white-space:pre-wrap;margin-bottom:1.5rem">${esc((j.description||'No description available.').slice(0,2000))}${(j.description||'').length>2000?'…':''}</div>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+        <button class="btn-apply" style="flex:1;padding:.75rem" onclick="trackJob(${j.id},'${esc(j.title)}','${esc(j.company)}')">+ Track My Application</button>
+        <a href="${esc(j.url||'#')}" target="_blank" rel="noopener" style="flex:1">
+          <button style="width:100%;padding:.75rem;background:transparent;border:1.5px solid var(--accent);color:var(--accent);border-radius:10px;font-family:'Cabinet Grotesk',sans-serif;font-weight:800;cursor:pointer">Apply on ${esc(j.source||'Site')} →</button>
+        </a>
+      </div>`;
+  } catch { document.getElementById('jobDetailBody').innerHTML = '<p style="color:var(--muted)">Could not load job details.</p>'; }
+}
+
+// ── TRACK / APPLY ─────────────────────────────────────────────────────────────
+async function trackJob(jobId, title, company) {
+  if (!currentUser) { closeJobModal(); openLogin(); return; }
+  try {
+    const r = await fetch(`${API}/applications`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job_id:jobId})});
+    const d = await r.json();
+    if (r.ok) toast(`✅ "${title}" added to tracker!`, 'success');
+    else if ((d.detail||d.error||'').includes('Already')) toast('Already tracking this job','error');
+    else toast(d.detail||d.error||'Error','error');
+  } catch { toast('Connection error','error'); }
+}
+
+// ── DASHBOARD ────────────────────────────────────────────────────────────────
+function showDashboard() {
+  if (!currentUser) { openLogin(); return; }
+  document.getElementById('homeSections').style.display = 'none';
+  document.getElementById('dashSection').style.display = 'block';
+  loadApplications();
+}
+function showHome() {
+  document.getElementById('homeSections').style.display = '';
+  document.getElementById('dashSection').style.display = 'none';
+}
+
+async function loadApplications() {
+  const el = document.getElementById('appList');
+  el.innerHTML = '<p style="color:var(--muted)">Loading...</p>';
+  try {
+    const r = await fetch(`${API}/applications`);
+    const apps = await r.json();
+    if (!apps.length) { el.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted)"><p style="font-size:1.1rem">No applications tracked yet!</p><p style="margin-top:.5rem">Browse jobs and click "Track" to get started.</p></div>'; return; }
+    el.innerHTML = apps.map(a => `
+      <div id="app${a.id}" style="background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:.75rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div>
+          <div style="font-family:Fraunces,serif;font-weight:600;font-size:1rem;margin-bottom:.2rem">${esc(a.job_title)}</div>
+          <div style="font-size:.83rem;color:var(--muted)">${esc(a.company)} · Applied ${relTime(a.applied_at)}</div>
+        </div>
+        <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap">
+          <span style="padding:.25rem .7rem;border-radius:6px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;background:${statusColor(a.status)}20;color:${statusColor(a.status)}">${a.status}</span>
+          <select onchange="updateStatus(${a.id},this.value)" style="border:1.5px solid var(--border);border-radius:8px;padding:.3rem .6rem;font-family:'Cabinet Grotesk',sans-serif;font-size:.8rem;background:#fff;cursor:pointer">
+            ${['applied','interview','offer','rejected','withdrawn'].map(s=>`<option${a.status===s?' selected':''}>${s}</option>`).join('')}
+          </select>
+          ${a.job_url ? `<a href="${esc(a.job_url)}" target="_blank"><button class="btn-apply" style="font-size:.78rem;padding:.3rem .8rem">View</button></a>` : ''}
+          <button onclick="deleteApp(${a.id})" style="background:#fff;border:1.5px solid #fca5a5;color:#dc2626;padding:.3rem .8rem;border-radius:8px;font-family:'Cabinet Grotesk',sans-serif;font-size:.8rem;cursor:pointer;font-weight:700">Remove</button>
+        </div>
+      </div>`).join('');
+  } catch { el.innerHTML = '<p style="color:var(--muted)">Failed to load.</p>'; }
+}
+
+function statusColor(s) { return {applied:'#0077b6',interview:'#d97706',offer:'#00a86b',rejected:'#dc2626',withdrawn:'#7c3aed'}[s]||'#8a6a4a'; }
+
+async function updateStatus(id, status) {
+  const r = await fetch(`${API}/applications/${id}`, {method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});
+  if (r.ok) toast('Status updated ✓','success'); else toast('Update failed','error');
+  loadApplications();
+}
+
+async function deleteApp(id) {
+  if (!confirm('Remove this application?')) return;
+  const r = await fetch(`${API}/applications/${id}`, {method:'DELETE'});
+  if (r.ok) { document.getElementById('app'+id)?.remove(); toast('Removed'); }
+}
+
+// ── FILTERS ──────────────────────────────────────────────────────────────────
+function doFilter() { currentPage=1; loadJobs(1); }
+
+function setCat(el, cat) {
+  document.querySelectorAll('.cpill').forEach(p=>p.classList.remove('active'));
+  if(el) el.classList.add('active');
+  activeCat = cat; activeRemote = false; doFilter();
+}
+
+// ── MODALS ───────────────────────────────────────────────────────────────────
+function openLogin() {
+  document.getElementById('loginForm').style.display=''; document.getElementById('regForm').style.display='none';
+  document.getElementById('authModal').style.display='flex';
+}
+function openRegister() {
+  document.getElementById('loginForm').style.display='none'; document.getElementById('regForm').style.display='';
+  document.getElementById('authModal').style.display='flex';
+}
+function switchForm(to) {
+  document.getElementById('loginForm').style.display = to==='login'?'':'none';
+  document.getElementById('regForm').style.display = to==='reg'?'':'none';
+}
+function closeModal(id) { document.getElementById(id).style.display='none'; }
+function closeJobModal() { document.getElementById('jobDetailModal').style.display='none'; }
+
+// Close modals on overlay click
+document.addEventListener('click', e => {
+  if (e.target.id==='authModal') closeModal('authModal');
+  if (e.target.id==='jobDetailModal') closeJobModal();
+});
+
+// Enter key on search
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('searchInput')?.addEventListener('keydown', e => { if(e.key==='Enter') doFilter(); });
+});
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+checkAuth();
+loadJobs(1);
+</script>
+
+<!-- AUTH MODAL -->
+<div id="authModal" style="display:none;position:fixed;inset:0;background:rgba(26,15,0,.6);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px)" onclick="if(event.target===this)closeModal('authModal')">
+  <div class="modal-box">
+    <button onclick="closeModal('authModal')" style="position:absolute;top:1rem;right:1rem;background:var(--surface2);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--muted)">✕</button>
+    <div id="loginForm">
+      <h2>Welcome back</h2>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:1.2rem">Sign in to track your applications</p>
+      <div id="loginErr" class="err-box"></div>
+      <label class="form-lbl">Email</label><input class="form-inp" id="loginEmail" type="email" placeholder="you@email.com">
+      <label class="form-lbl">Password</label><input class="form-inp" id="loginPw" type="password" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="btn-full" onclick="doLogin()">Sign In</button>
+      <p style="text-align:center;margin-top:1rem;font-size:.83rem;color:var(--muted)">No account? <a onclick="switchForm('reg')" style="color:var(--accent);cursor:pointer;font-weight:700">Register free</a></p>
+    </div>
+    <div id="regForm" style="display:none">
+      <h2>Join WorkHive SA</h2>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:1.2rem">Free account to track all your applications</p>
+      <div id="regErr" class="err-box"></div>
+      <label class="form-lbl">Full Name</label><input class="form-inp" id="regName" type="text" placeholder="Your name">
+      <label class="form-lbl">Email</label><input class="form-inp" id="regEmail" type="email" placeholder="you@email.com">
+      <label class="form-lbl">Password</label><input class="form-inp" id="regPw" type="password" placeholder="Min 6 characters" onkeydown="if(event.key==='Enter')doRegister()">
+      <button class="btn-full" onclick="doRegister()">Create Free Account</button>
+      <p style="text-align:center;margin-top:1rem;font-size:.83rem;color:var(--muted)">Already registered? <a onclick="switchForm('login')" style="color:var(--accent);cursor:pointer;font-weight:700">Sign in</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- JOB DETAIL MODAL -->
+<div id="jobDetailModal" style="display:none;position:fixed;inset:0;background:rgba(26,15,0,.6);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(4px)" onclick="if(event.target===this)closeJobModal()">
+  <div class="modal-box" style="max-width:620px;max-height:90vh;overflow-y:auto">
+    <button onclick="closeJobModal()" style="position:absolute;top:1rem;right:1rem;background:var(--surface2);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;color:var(--muted)">✕</button>
+    <div id="jobDetailBody"></div>
+  </div>
+</div>
+</body>
+</html>
